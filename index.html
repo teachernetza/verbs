@@ -293,6 +293,8 @@
             .sidebar { width: 100%; }
             .wa-float { width: 60px; height: 60px; font-size: 32px; bottom: 25px; left: 25px; }
             .verb-grid { grid-template-columns: 1fr; }
+            .matrix-controls { flex-direction: column; }
+            .filter-btn { width: 100%; }
         }
     </style>
 </head>
@@ -314,7 +316,7 @@
     <div class="nav-title">Ruta de Práctica</div>
     <div style="display: flex; flex-direction: column; gap: 5px;">
         <button class="side-btn active" onclick="nav('home', this)"><i class="fas fa-home"></i> Introducción</button>
-        <button class="side-btn" onclick="nav('dictionary', this)"><i class="fas fa-book"></i> Matriz de Verbos (+50)</button>
+        <button class="side-btn" onclick="nav('dictionary', this)"><i class="fas fa-book"></i> Matriz Expandida (115+)</button>
         <button class="side-btn" onclick="nav('phonics', this)"><i class="fas fa-volume-up"></i> Reglas de Pronunciación</button>
         <button class="side-btn" onclick="nav('practice', this)"><i class="fas fa-wrench"></i> Taller de Contexto</button>
         <button class="side-btn" onclick="nav('evaluation', this)"><i class="fas fa-stopwatch"></i> Evaluación de Fluidez</button>
@@ -337,8 +339,8 @@
             <p>Conocer gramática sin tener vocabulario es como saber manejar un auto pero no tener gasolina. Los verbos son el motor de cualquier idioma; sin ellos, no hay acción.</p>
             
             <div class="explainer-box">
-                <b>¿Cuál es la estrategia aquí?</b>
-                <p>No vamos a memorizar listas interminables en orden alfabético. En este laboratorio hemos filtrado los <b>+50 verbos más utilizados en conversaciones reales</b>.</p>
+                <b>El Siguiente Nivel</b>
+                <p>En este laboratorio hemos expandido la base de datos a <b>más de 110 verbos esenciales</b>, cubriendo desde conversaciones casuales hasta el entorno académico y profesional.</p>
             </div>
 
             <p>Aprenderemos a identificarlos, a transformarlos al <b>Past Simple</b> (Regulares vs Irregulares) y, lo más crítico: a pronunciarlos como un profesional usando las reglas acústicas de la terminación <b>-ed</b>.</p>
@@ -350,7 +352,7 @@
     <section id="sec-dictionary" class="section">
         <div class="card">
             <h1 class="serif-text">Matriz de <span style="color: var(--secondary);">Verbos</span></h1>
-            <p>Explora el arsenal. <b>Haz clic en cualquier tarjeta</b> para escuchar la pronunciación correcta del verbo en presente y en pasado.</p>
+            <p>Explora el arsenal completo (115 verbos). <b>Haz clic en cualquier tarjeta</b> para escuchar la pronunciación correcta en su forma base y en pasado.</p>
             
             <div class="matrix-controls">
                 <input type="text" class="search-bar" id="searchInput" placeholder="Buscar en inglés o español..." onkeyup="filterVerbs()">
@@ -406,7 +408,7 @@
     <section id="sec-practice" class="section">
         <div class="card">
             <h1 class="serif-text">Taller de <span style="color: var(--secondary);">Contexto</span></h1>
-            <p>Un verbo no sirve de nada si no sabes en qué tiempo usarlo. Lee la oración y selecciona el verbo correcto (Presente o Pasado) para completar el sentido.</p>
+            <p>Un verbo no sirve de nada si no sabes en qué tiempo usarlo. Lee la oración y selecciona el verbo correcto para completar el sentido.</p>
             
             <div class="workshop-area">
                 <div class="sentence-display" id="pracSentence">
@@ -478,52 +480,37 @@
 
 <script>
     /* ========================================
-       ENGINE: VERB MASTERY LOGIC
+       ENGINE: VERB MASTERY LOGIC (115 VERBS)
        ======================================== */
     
-    // --- Top 50 Verbs Database ---
+    // --- Top 115 Verbs Database ---
     const verbsDb = [
+        // Irregulares Clásicos
         { base: "be", past: "was/were", type: "irregular", es: "ser / estar" },
         { base: "have", past: "had", type: "irregular", es: "tener" },
         { base: "do", past: "did", type: "irregular", es: "hacer" },
         { base: "say", past: "said", type: "irregular", es: "decir" },
         { base: "go", past: "went", type: "irregular", es: "ir" },
-        { base: "get", past: "got", type: "irregular", es: "obtener / conseguir" },
+        { base: "get", past: "got", type: "irregular", es: "obtener" },
         { base: "make", past: "made", type: "irregular", es: "hacer / fabricar" },
         { base: "know", past: "knew", type: "irregular", es: "saber / conocer" },
         { base: "think", past: "thought", type: "irregular", es: "pensar" },
-        { base: "take", past: "took", type: "irregular", es: "tomar / llevar" },
+        { base: "take", past: "took", type: "irregular", es: "tomar" },
         { base: "see", past: "saw", type: "irregular", es: "ver" },
         { base: "come", past: "came", type: "irregular", es: "venir" },
         { base: "find", past: "found", type: "irregular", es: "encontrar" },
         { base: "give", past: "gave", type: "irregular", es: "dar" },
-        { base: "tell", past: "told", type: "irregular", es: "decirle a alguien" },
-        { base: "work", past: "worked", type: "regular", es: "trabajar" },
-        { base: "call", past: "called", type: "regular", es: "llamar" },
-        { base: "try", past: "tried", type: "regular", es: "intentar" },
-        { base: "ask", past: "asked", type: "regular", es: "preguntar / pedir" },
-        { base: "need", past: "needed", type: "regular", es: "necesitar" },
+        { base: "tell", past: "told", type: "irregular", es: "contar / decir a" },
         { base: "feel", past: "felt", type: "irregular", es: "sentir" },
-        { base: "become", past: "became", type: "irregular", es: "convertirse en" },
+        { base: "become", past: "became", type: "irregular", es: "llegar a ser" },
         { base: "leave", past: "left", type: "irregular", es: "dejar / salir" },
         { base: "put", past: "put", type: "irregular", es: "poner" },
         { base: "mean", past: "meant", type: "irregular", es: "significar" },
-        { base: "keep", past: "kept", type: "irregular", es: "mantener / guardar" },
-        { base: "let", past: "let", type: "irregular", es: "permitir / dejar" },
+        { base: "keep", past: "kept", type: "irregular", es: "mantener" },
+        { base: "let", past: "let", type: "irregular", es: "permitir" },
         { base: "begin", past: "began", type: "irregular", es: "empezar" },
-        { base: "seem", past: "seemed", type: "regular", es: "parecer" },
-        { base: "help", past: "helped", type: "regular", es: "ayudar" },
-        { base: "talk", past: "talked", type: "regular", es: "hablar" },
-        { base: "turn", past: "turned", type: "regular", es: "girar / dar vuelta" },
-        { base: "start", past: "started", type: "regular", es: "comenzar" },
-        { base: "show", past: "showed", type: "regular", es: "mostrar" },
         { base: "hear", past: "heard", type: "irregular", es: "escuchar" },
-        { base: "play", past: "played", type: "regular", es: "jugar / tocar" },
         { base: "run", past: "ran", type: "irregular", es: "correr" },
-        { base: "move", past: "moved", type: "regular", es: "mover / mudarse" },
-        { base: "like", past: "liked", type: "regular", es: "gustar" },
-        { base: "live", past: "lived", type: "regular", es: "vivir" },
-        { base: "believe", past: "believed", type: "regular", es: "creer" },
         { base: "hold", past: "held", type: "irregular", es: "sostener" },
         { base: "bring", past: "brought", type: "irregular", es: "traer" },
         { base: "write", past: "wrote", type: "irregular", es: "escribir" },
@@ -532,7 +519,98 @@
         { base: "lose", past: "lost", type: "irregular", es: "perder" },
         { base: "pay", past: "paid", type: "irregular", es: "pagar" },
         { base: "meet", past: "met", type: "irregular", es: "conocer / reunirse" },
-        { base: "learn", past: "learned", type: "regular", es: "aprender" }
+        { base: "understand", past: "understood", type: "irregular", es: "entender" },
+        { base: "speak", past: "spoke", type: "irregular", es: "hablar (idioma)" },
+        { base: "read", past: "read", type: "irregular", es: "leer" },
+        { base: "spend", past: "spent", type: "irregular", es: "gastar / pasar tiempo" },
+        { base: "grow", past: "grew", type: "irregular", es: "crecer" },
+        { base: "win", past: "won", type: "irregular", es: "ganar" },
+        { base: "buy", past: "bought", type: "irregular", es: "comprar" },
+        { base: "send", past: "sent", type: "irregular", es: "enviar" },
+        { base: "build", past: "built", type: "irregular", es: "construir" },
+        { base: "fall", past: "fell", type: "irregular", es: "caer" },
+        { base: "cut", past: "cut", type: "irregular", es: "cortar" },
+        { base: "sell", past: "sold", type: "irregular", es: "vender" },
+        { base: "break", past: "broke", type: "irregular", es: "romper" },
+        { base: "eat", past: "ate", type: "irregular", es: "comer" },
+        { base: "catch", past: "caught", type: "irregular", es: "atrapar" },
+        { base: "draw", past: "drew", type: "irregular", es: "dibujar" },
+        { base: "choose", past: "chose", type: "irregular", es: "elegir" },
+        { base: "teach", past: "taught", type: "irregular", es: "enseñar" },
+        { base: "sleep", past: "slept", type: "irregular", es: "dormir" },
+        { base: "drive", past: "drove", type: "irregular", es: "manejar" },
+        { base: "drink", past: "drank", type: "irregular", es: "beber" },
+        { base: "forget", past: "forgot", type: "irregular", es: "olvidar" },
+        { base: "fly", past: "flew", type: "irregular", es: "volar" },
+        { base: "sing", past: "sang", type: "irregular", es: "cantar" },
+        { base: "swim", past: "swam", type: "irregular", es: "nadar" },
+        { base: "cost", past: "cost", type: "irregular", es: "costar" },
+        { base: "hurt", past: "hurt", type: "irregular", es: "doler / herir" },
+        { base: "shut", past: "shut", type: "irregular", es: "cerrar" },
+        { base: "steal", past: "stole", type: "irregular", es: "robar" },
+        { base: "throw", past: "threw", type: "irregular", es: "lanzar" },
+        { base: "wear", past: "wore", type: "irregular", es: "usar (ropa)" },
+
+        // Regulares Esenciales
+        { base: "work", past: "worked", type: "regular", es: "trabajar" },
+        { base: "call", past: "called", type: "regular", es: "llamar" },
+        { base: "try", past: "tried", type: "regular", es: "intentar" },
+        { base: "ask", past: "asked", type: "regular", es: "preguntar / pedir" },
+        { base: "need", past: "needed", type: "regular", es: "necesitar" },
+        { base: "seem", past: "seemed", type: "regular", es: "parecer" },
+        { base: "help", past: "helped", type: "regular", es: "ayudar" },
+        { base: "talk", past: "talked", type: "regular", es: "hablar / platicar" },
+        { base: "turn", past: "turned", type: "regular", es: "girar / encender" },
+        { base: "start", past: "started", type: "regular", es: "comenzar" },
+        { base: "show", past: "showed", type: "regular", es: "mostrar" },
+        { base: "play", past: "played", type: "regular", es: "jugar / tocar" },
+        { base: "move", past: "moved", type: "regular", es: "mover / mudarse" },
+        { base: "like", past: "liked", type: "regular", es: "gustar" },
+        { base: "live", past: "lived", type: "regular", es: "vivir" },
+        { base: "believe", past: "believed", type: "regular", es: "creer" },
+        { base: "learn", past: "learned", type: "regular", es: "aprender" },
+        { base: "happen", past: "happened", type: "regular", es: "suceder" },
+        { base: "provide", past: "provided", type: "regular", es: "proveer" },
+        { base: "include", past: "included", type: "regular", es: "incluir" },
+        { base: "continue", past: "continued", type: "regular", es: "continuar" },
+        { base: "change", past: "changed", type: "regular", es: "cambiar" },
+        { base: "watch", past: "watched", type: "regular", es: "mirar (TV)" },
+        { base: "follow", past: "followed", type: "regular", es: "seguir" },
+        { base: "stop", past: "stopped", type: "regular", es: "detener" },
+        { base: "create", past: "created", type: "regular", es: "crear" },
+        { base: "allow", past: "allowed", type: "regular", es: "permitir" },
+        { base: "add", past: "added", type: "regular", es: "agregar" },
+        { base: "open", past: "opened", type: "regular", es: "abrir" },
+        { base: "walk", past: "walked", type: "regular", es: "caminar" },
+        { base: "offer", past: "offered", type: "regular", es: "ofrecer" },
+        { base: "remember", past: "remembered", type: "regular", es: "recordar" },
+        { base: "love", past: "loved", type: "regular", es: "amar" },
+        { base: "consider", past: "considered", type: "regular", es: "considerar" },
+        { base: "appear", past: "appeared", type: "regular", es: "aparecer" },
+        { base: "wait", past: "waited", type: "regular", es: "esperar" },
+        { base: "serve", past: "served", type: "regular", es: "servir" },
+        { base: "die", past: "died", type: "regular", es: "morir" },
+        { base: "expect", past: "expected", type: "regular", es: "esperar (expectativa)" },
+        { base: "stay", past: "stayed", type: "regular", es: "quedarse" },
+        { base: "reach", past: "reached", type: "regular", es: "alcanzar" },
+        { base: "kill", past: "killed", type: "regular", es: "matar" },
+        { base: "remain", past: "remained", type: "regular", es: "permanecer" },
+        { base: "suggest", past: "suggested", type: "regular", es: "sugerir" },
+        { base: "raise", past: "raised", type: "regular", es: "elevar / criar" },
+        { base: "pass", past: "passed", type: "regular", es: "pasar" },
+        { base: "require", past: "required", type: "regular", es: "requerir" },
+        { base: "report", past: "reported", type: "regular", es: "reportar" },
+        { base: "decide", past: "decided", type: "regular", es: "decidir" },
+        { base: "pull", past: "pulled", type: "regular", es: "jalar" },
+        { base: "return", past: "returned", type: "regular", es: "regresar" },
+        { base: "explain", past: "explained", type: "regular", es: "explicar" },
+        { base: "hope", past: "hoped", type: "regular", es: "esperar (esperanza)" },
+        { base: "develop", past: "developed", type: "regular", es: "desarrollar" },
+        { base: "receive", past: "received", type: "regular", es: "recibir" },
+        { base: "agree", past: "agreed", type: "regular", es: "estar de acuerdo" },
+        { base: "support", past: "supported", type: "regular", es: "apoyar" },
+        { base: "produce", past: "produced", type: "regular", es: "producir" },
+        { base: "cover", past: "covered", type: "regular", es: "cubrir" }
     ];
 
     let currentFilter = 'all';
@@ -544,7 +622,6 @@
     function speakVerb(base, past) {
         window.speechSynthesis.cancel();
         let text = `${base}. Past: ${past}`;
-        // Clean up text for TTS (e.g., was/were -> was, were)
         text = text.replace("/", ", ");
         const msg = new SpeechSynthesisUtterance(text);
         msg.lang = 'en-US'; msg.rate = 0.8;
@@ -673,7 +750,6 @@
         const optionsGrid = document.getElementById('pracOptions');
         optionsGrid.innerHTML = '';
         
-        // Shuffle options
         let opts = [...data.options].sort(() => Math.random() - 0.5);
         
         opts.forEach(opt => {
@@ -689,7 +765,7 @@
         if(selected === correct) {
             confetti({ particleCount: 100, spread: 60, origin: { y: 0.6 } });
             document.getElementById('pracSentence').innerHTML = document.getElementById('pracSentence').innerHTML.replace("<span class='blank'></span>", `<span style='color:var(--primary); font-family:JetBrains Mono, monospace;'>${correct}</span>`);
-            document.getElementById('pracOptions').innerHTML = ''; // Hide buttons
+            document.getElementById('pracOptions').innerHTML = ''; 
             
             const expBox = document.getElementById('teacherExp');
             document.getElementById('expText').innerHTML = explanation;
@@ -698,7 +774,6 @@
             
         } else {
             speakText("Try again.");
-            // Pequeña animación de error
             const btns = document.querySelectorAll('.opt-btn');
             btns.forEach(b => {
                 if(b.innerText === selected) {
@@ -826,7 +901,6 @@
             document.body.classList.add('dark-mode');
             document.getElementById('themeInput').checked = true;
         }
-        // Initialize verbs dict on load
         renderVerbs();
     };
 </script>
