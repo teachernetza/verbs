@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Action Arsenal | Rators Club</title>
+    
+    <link rel="icon" href="https://drive.google.com/thumbnail?id=1bOFY9XiVAv-WRQnVHXSnL5FHVEoK3UAp&sz=w128" type="image/png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Nunito+Sans:wght@300;400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* ========================================
+           SISTEMA DE DISEÑO: PREMIUM EDUCATIONAL GLOW
+           ======================================== */
+        :root {
+            --bg-color: #fdfcf9; 
+            --surface-color: #ffffff;
+            --surface-hover: #f4f5f7;
+            --header-bg: rgba(255, 255, 255, 0.92);
+            
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            
+            --primary: #3730a3; 
+            --primary-light: rgba(55, 48, 163, 0.05);
+            --secondary: #059669; 
+            --secondary-light: rgba(5, 150, 105, 0.05);
+            --accent: #d97706; 
+            --accent-light: rgba(217, 119, 6, 0.05);
+            --error: #dc2626; 
+            --error-light: rgba(220, 38, 38, 0.05);
+            
+            --border-color: #e5e7eb;
+            --border-focus: rgba(55, 48, 163, 0.2);
+            
+            --glow-static: 0 8px 25px rgba(55, 48, 163, 0.06);
+            --glow-hover: 0 15px 40px rgba(55, 48, 163, 0.15);
+            --glow-secondary: 0 15px 40px rgba(5, 150, 105, 0.15);
+            
+            --radius-soft: 16px;
+            --radius-card: 28px;
+        }
+
+        .dark-mode {
+            --bg-color: #0f1115; 
+            --surface-color: #1a1d24;
+            --surface-hover: #252932;
+            --header-bg: rgba(15, 17, 21, 0.92);
+            
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            
+            --primary: #818cf8; 
+            --primary-light: rgba(129, 140, 248, 0.1);
+            --secondary: #34d399; 
+            --secondary-light: rgba(52, 211, 153, 0.1);
+            --accent: #fbbf24;
+            --accent-light: rgba(251, 191, 36, 0.1);
+            --error: #ef4444;
+            --error-light: rgba(239, 68, 68, 0.1);
+            
+            --border-color: #2d3139;
+            --border-focus: rgba(129, 140, 248, 0.4);
+            
+            --glow-static: 0 8px 25px rgba(129, 140, 248, 0.08);
+            --glow-hover: 0 15px 40px rgba(129, 140, 248, 0.25);
+            --glow-secondary: 0 15px 40px rgba(52, 211, 153, 0.2);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
+        html, body { width: 100%; height: 100%; overflow-x: hidden; scroll-behavior: smooth; }
+        
+        body { 
+            font-family: 'Nunito Sans', sans-serif; 
+            background-color: var(--bg-color); color: var(--text-main); 
+            transition: background-color 0.6s ease, color 0.6s ease; 
+            line-height: 1.8; font-size: 17px;
+        }
+
+        h1, h2, h3, .serif-text { font-family: 'Lora', serif; font-weight: 600; }
+
+        .learning-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background-image: radial-gradient(var(--border-color) 1px, transparent 1px);
+            background-size: 40px 40px; opacity: 0.4; transition: opacity 0.5s ease;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Header --- */
+        header {
+            padding: 1.2rem 3.5rem; display: flex; justify-content: space-between; align-items: center;
+            background: var(--header-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            position: sticky; top: 0; z-index: 2000; border-bottom: 1px solid var(--border-color);
+            transition: all 0.4s ease; box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+        }
+        
+        .header-brand { display: flex; align-items: center; gap: 18px; text-decoration: none; color: inherit; transition: 0.3s; }
+        .header-brand:hover { transform: translateY(-2px); }
+        
+        .logo-box { 
+            width: 55px; height: 55px; border-radius: 16px; 
+            display: flex; align-items: center; justify-content: center; 
+            background: var(--surface-color); overflow: hidden; border: 2px solid var(--border-focus);
+            box-shadow: var(--glow-static); transition: 0.4s ease;
+        }
+        .header-brand:hover .logo-box { box-shadow: var(--glow-hover); border-color: var(--primary); }
+        .logo-box img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .brand-text { font-family: 'Nunito Sans', sans-serif; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px; color: var(--primary); }
+
+        .menu-trigger { 
+            background: var(--surface-color); border: 1px solid var(--border-color); 
+            width: 50px; height: 50px; border-radius: 14px; cursor: pointer; 
+            color: var(--text-main); font-size: 1.2rem; display: flex; align-items: center; justify-content: center; 
+            transition: 0.3s ease; box-shadow: var(--glow-static);
+        }
+        .menu-trigger:hover { background: var(--primary-light); color: var(--primary); border-color: var(--primary); box-shadow: var(--glow-hover); }
+
+        /* --- Sidebar --- */
+        .sidebar { 
+            position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100%; 
+            background: var(--surface-color); z-index: 3000; 
+            transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1); padding: 3rem 2.5rem; 
+            border-left: 1px solid var(--border-color); box-shadow: -15px 0 50px rgba(0,0,0,0.08);
+            display: flex; flex-direction: column; overflow-y: auto;
+        }
+        .sidebar.active { right: 0; }
+        
+        .sidebar-close { background: none; border: none; font-size: 2rem; align-self: flex-end; color: var(--text-muted); cursor: pointer; transition: 0.3s; margin-bottom: 1.5rem; }
+        .sidebar-close:hover { color: var(--text-main); transform: scale(1.1) rotate(90deg); }
+
+        .nav-title { font-size: 0.85rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1.5rem; padding-left: 5px; }
+
+        .side-btn { 
+            width: 100%; padding: 18px 22px; border: 1px solid transparent; border-radius: var(--radius-soft); 
+            background: transparent; color: var(--text-muted); font-weight: 600; text-align: left; 
+            cursor: pointer; display: flex; align-items: center; gap: 18px; text-decoration: none; 
+            font-size: 1.1rem; transition: 0.3s; font-family: 'Nunito Sans', sans-serif; margin-bottom: 8px;
+        }
+        .side-btn i { font-size: 1.3rem; width: 30px; text-align: center; transition: 0.3s; color: var(--text-muted); opacity: 0.8;}
+        .side-btn:hover { background: var(--surface-hover); color: var(--text-main); transform: translateX(-5px); border-color: var(--border-color); }
+        .side-btn:hover i { color: var(--primary); opacity: 1; }
+        .side-btn.active { background: var(--primary-light); color: var(--primary); font-weight: 700; border-color: var(--border-focus); box-shadow: inset 0 0 15px rgba(55, 48, 163, 0.03); }
+        .side-btn.active i { color: var(--primary); opacity: 1; }
+
+        .theme-control {
+            margin-top: 2rem; padding: 22px; border-radius: var(--radius-soft); display: flex; justify-content: space-between; align-items: center; background: var(--surface-hover); border: 1px solid var(--border-color);
+        }
+        .theme-control span { font-size: 0.95rem; font-weight: 700; color: var(--text-main); }
+        .switch { position: relative; width: 54px; height: 30px; cursor: pointer; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: var(--text-muted); border-radius: 30px; transition: 0.4s; }
+        .slider:before { position: absolute; content: ""; height: 22px; width: 22px; left: 4px; bottom: 4px; background: white; border-radius: 50%; transition: 0.4s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        input:checked + .slider { background: var(--primary); }
+        input:checked + .slider:before { transform: translateX(24px); }
+
+        /* --- Contenedor Principal --- */
+        .container { max-width: 1150px; margin: 0 auto; padding: 4rem 1.5rem; min-height: 80vh; }
+        .section { display: none; }
+        .section.active { display: block; animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        .card { 
+            background: var(--surface-color); border: 1px solid var(--border-color); border-radius: var(--radius-card); 
+            padding: 4.5rem 3.5rem; margin-bottom: 3rem; box-shadow: var(--glow-static); 
+            position: relative; overflow: hidden; transition: 0.4s;
+        }
+        .card:hover { border-color: var(--border-focus); box-shadow: var(--glow-hover); }
+
+        h1 { font-size: clamp(2.6rem, 7vw, 4.2rem); color: var(--text-main); line-height: 1.15; margin-bottom: 1.5rem; letter-spacing: -1px;}
+        h1 span { color: var(--primary); }
+        h2 { font-size: 2rem; margin: 3.5rem 0 1.5rem; color: var(--text-main); border-bottom: 2px solid var(--border-color); padding-bottom: 10px;}
+        p { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 1.5rem; }
+        
+        .bold-purple { color: var(--primary); font-weight: 700; }
+        .bold-green { color: var(--secondary); font-weight: 700; }
+        
+        .lang-en { font-family: 'JetBrains Mono', monospace; background: var(--surface-hover); border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 8px; font-weight: 600; color: var(--primary); font-size: 1.05rem; }
+        
+        .explainer-box { background: var(--secondary-light); border-left: 6px solid var(--secondary); padding: 2.5rem; border-radius: 16px; margin: 3rem 0; }
+        .explainer-box p { color: var(--text-main); margin-bottom: 0; font-weight: 500; }
+        .explainer-box b { color: var(--secondary); font-size: 1.3rem; display: block; margin-bottom: 10px; font-family: 'Lora', serif; }
+
+        /* --- Verb Dictionary Matrix --- */
+        .matrix-controls { display: flex; gap: 15px; margin-bottom: 2rem; flex-wrap: wrap; }
+        .search-bar { flex-grow: 1; padding: 18px 25px; border-radius: 20px; border: 2px solid var(--border-color); background: var(--bg-color); color: var(--text-main); font-size: 1.1rem; font-family: 'Nunito Sans', sans-serif; transition: 0.3s; }
+        .search-bar:focus { border-color: var(--primary); box-shadow: var(--glow-static); }
+        .filter-btn { padding: 15px 30px; border-radius: 20px; border: 2px solid var(--border-color); background: var(--surface-color); color: var(--text-muted); font-weight: 700; cursor: pointer; transition: 0.3s; font-size: 1rem; }
+        .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: var(--glow-static); }
+
+        .verb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; max-height: 600px; overflow-y: auto; padding-right: 10px; }
+        .verb-grid::-webkit-scrollbar { width: 8px; }
+        .verb-grid::-webkit-scrollbar-track { background: var(--bg-color); border-radius: 10px; }
+        .verb-grid::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+        
+        .verb-card { 
+            background: var(--bg-color); border: 2px solid var(--border-color); border-radius: 20px; 
+            padding: 20px; display: flex; flex-direction: column; transition: 0.3s; cursor: pointer;
+            position: relative; overflow: hidden;
+        }
+        .verb-card:hover { transform: translateY(-5px); box-shadow: var(--glow-static); border-color: var(--primary); }
+        .verb-card .es-meaning { font-size: 0.95rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+        .verb-card .en-base { font-family: 'Lora', serif; font-size: 1.8rem; color: var(--text-main); font-weight: 700; line-height: 1; margin-bottom: 5px; }
+        .verb-card .en-past { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; color: var(--primary); font-weight: 700; }
+        .verb-card .type-tag { position: absolute; top: 20px; right: 20px; font-size: 0.75rem; font-weight: 800; padding: 4px 10px; border-radius: 8px; text-transform: uppercase; }
+        .type-tag.reg { background: var(--secondary-light); color: var(--secondary); }
+        .type-tag.irreg { background: var(--primary-light); color: var(--primary); }
+        .audio-icon-hover { position: absolute; bottom: 20px; right: 20px; color: var(--border-color); font-size: 1.5rem; transition: 0.3s; }
+        .verb-card:hover .audio-icon-hover { color: var(--primary); }
+
+        /* Pronunciation Rules */
+        .pron-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 2rem; }
+        .pron-box { padding: 30px; border-radius: 20px; border: 2px solid var(--border-color); background: var(--bg-color); text-align: center; }
+        .pron-box .sound { font-family: 'JetBrains Mono', monospace; font-size: 3rem; font-weight: 800; color: var(--primary); margin-bottom: 15px; display: block; }
+        .pron-box p { font-size: 1.05rem; margin-bottom: 15px; }
+
+        /* --- Interactive Workshop --- */
+        .workshop-area { background: var(--bg-color); padding: 3.5rem 2.5rem; border-radius: 24px; margin-top: 3rem; text-align: center; border: 1px solid var(--border-color); }
+        
+        .sentence-display { font-family: 'Lora', serif; font-size: 1.8rem; color: var(--text-main); font-weight: 600; margin-bottom: 2.5rem; line-height: 1.5; }
+        .sentence-display .blank { display: inline-block; min-width: 120px; height: 40px; border-bottom: 3px solid var(--primary); margin: 0 10px; color: var(--primary); font-family: 'JetBrains Mono', monospace; }
+        
+        .options-grid { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 2rem; }
+        .opt-btn { background: var(--surface-color); border: 2px solid var(--border-color); padding: 15px 30px; border-radius: 16px; font-weight: 700; cursor: pointer; font-size: 1.2rem; color: var(--text-main); font-family: 'JetBrains Mono', monospace; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.02);}
+        .opt-btn:hover { transform: scale(1.05); border-color: var(--primary); color: var(--primary); }
+
+        .teacher-note { display: none; background: var(--secondary-light); border: 1px solid rgba(5, 150, 105, 0.3); border-radius: 20px; padding: 2.5rem; margin-top: 2rem; text-align: left; animation: fadeUp 0.5s forwards; }
+        .teacher-note b { color: var(--secondary); font-size: 1.3rem; display: block; margin-bottom: 15px; font-family: 'Lora', serif;}
+        .teacher-note p { color: var(--text-main); font-size: 1.15rem; margin-bottom: 0; }
+
+        .btn-ui { padding: 18px; border-radius: 16px; border: 1px solid transparent; font-weight: 700; cursor: pointer; transition: 0.3s; font-size: 1.1rem; font-family: 'Nunito Sans', sans-serif; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%;}
+        .btn-ui.verify { background: var(--primary); color: white; box-shadow: var(--glow-static); }
+        .btn-ui.verify:hover { transform: translateY(-3px); box-shadow: var(--glow-hover); background: #312e81; }
+
+        /* --- Quiz System --- */
+        .quiz-option { 
+            width: 100%; padding: 22px; margin-bottom: 15px; border: 1px solid var(--border-color); 
+            border-radius: 16px; background: var(--surface-color); color: var(--text-main); 
+            font-weight: 600; text-align: left; cursor: pointer; transition: 0.2s; font-size: 1.15rem;
+            font-family: 'Nunito Sans', sans-serif;
+        }
+        .quiz-option:hover { border-color: var(--primary); background: var(--primary-light); transform: translateX(8px); }
+        
+        .timer-track { width: 100%; height: 8px; background: var(--border-color); border-radius: 10px; margin-bottom: 3rem; overflow: hidden; }
+        #timer-fill { width: 100%; height: 100%; background: var(--accent); transition: width 1s linear; }
+
+        .success-frame { text-align: center; display: none; }
+        .success-img-box { width: 100%; max-width: 350px; margin: 3rem auto; border-radius: 24px; border: 4px solid var(--border-color); overflow: hidden; box-shadow: var(--glow-static); }
+        .success-img-box img { width: 100%; display: block; }
+        
+        .review-box { background: var(--bg-color); border: 1px solid var(--border-color); border-left: 4px solid var(--error); border-radius: 16px; padding: 2.5rem; margin: 3rem 0; text-align: left; display: none; }
+        .review-box h3 { color: var(--error); margin-top: 0; font-family: 'Lora', serif; font-size: 1.5rem; margin-bottom: 1.5rem;}
+        .review-item { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px dashed var(--border-color); }
+        .review-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+        /* --- Botones Genéricos --- */
+        .btn-action {
+            display: inline-flex; align-items: center; justify-content: center; gap: 15px; 
+            background: var(--primary); color: #ffffff; padding: 20px 40px; border-radius: 30px; 
+            text-decoration: none; font-weight: 700; font-size: 1.2rem; margin-top: 2rem; 
+            transition: 0.4s; border: none; cursor: pointer; width: 100%; 
+            box-shadow: var(--glow-static); font-family: 'Nunito Sans', sans-serif;
+        }
+        .btn-action:hover { transform: translateY(-5px); box-shadow: var(--glow-hover); }
+
+        /* --- WhatsApp Left --- */
+        .wa-float { 
+            position: fixed; bottom: 40px; left: 40px; background: #25d366; color: white; 
+            width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            font-size: 36px; z-index: 4000; box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
+            text-decoration: none; transition: 0.4s; border: 3px solid var(--surface-color);
+        }
+        .wa-float:hover { transform: translateY(-8px) scale(1.1); box-shadow: 0 15px 35px rgba(37, 211, 102, 0.5); }
+
+        /* --- Footer Premium --- */
+        footer { padding: 6rem 3rem 4rem; text-align: center; border-top: 1px solid var(--border-color); margin-top: 8rem; background: var(--surface-color); color: var(--text-muted); }
+        .footer-brand { font-family: 'Lora', serif; font-size: 2.2rem; font-weight: 700; color: var(--text-main); margin-bottom: 1rem; }
+        .footer-text { font-size: 1.1rem; font-weight: 500; margin-bottom: 5px; }
+        .footer-email { color: var(--primary); font-weight: 700; text-decoration: none; display: inline-block; margin-bottom: 2rem; transition: 0.3s; }
+        .footer-email:hover { color: var(--text-main); }
+        .footer-license { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color); font-size: 0.85rem; font-weight: 800; letter-spacing: 2px; color: var(--text-muted); opacity: 0.6; }
+
+        @media (max-width: 768px) {
+            header { padding: 1rem 1.5rem; }
+            .container { padding: 2rem 1rem; }
+            .card { padding: 3rem 1.5rem; }
+            .sidebar { width: 100%; }
+            .wa-float { width: 60px; height: 60px; font-size: 32px; bottom: 25px; left: 25px; }
+            .verb-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body onclick="unlockAudio()">
+
+<div class="learning-bg"></div>
+
+<header>
+    <div class="header-brand" onclick="nav('home')">
+        <div class="logo-box"><img src="https://drive.google.com/thumbnail?id=1bOFY9XiVAv-WRQnVHXSnL5FHVEoK3UAp&sz=w256" alt="Rators Logo"></div>
+        <div class="brand-text">Action Arsenal</div>
+    </div>
+    <button class="menu-trigger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+</header>
+
+<div class="sidebar" id="sidebar">
+    <button class="sidebar-close" onclick="toggleSidebar()"><i class="fas fa-times"></i></button>
+    
+    <div class="nav-title">Ruta de Práctica</div>
+    <div style="display: flex; flex-direction: column; gap: 5px;">
+        <button class="side-btn active" onclick="nav('home', this)"><i class="fas fa-home"></i> Introducción</button>
+        <button class="side-btn" onclick="nav('dictionary', this)"><i class="fas fa-book"></i> Matriz de Verbos (+50)</button>
+        <button class="side-btn" onclick="nav('phonics', this)"><i class="fas fa-volume-up"></i> Reglas de Pronunciación</button>
+        <button class="side-btn" onclick="nav('practice', this)"><i class="fas fa-wrench"></i> Taller de Contexto</button>
+        <button class="side-btn" onclick="nav('evaluation', this)"><i class="fas fa-stopwatch"></i> Evaluación de Fluidez</button>
+    </div>
+
+    <div class="theme-control">
+        <span>Modo Biblioteca</span>
+        <label class="switch">
+            <input type="checkbox" id="themeInput" onchange="toggleTheme()">
+            <span class="slider"></span>
+        </label>
+    </div>
+</div>
+
+<div class="container">
+
+    <section id="sec-home" class="section active">
+        <div class="card">
+            <h1 class="serif-text">The Action <span>Arsenal</span></h1>
+            <p>Conocer gramática sin tener vocabulario es como saber manejar un auto pero no tener gasolina. Los verbos son el motor de cualquier idioma; sin ellos, no hay acción.</p>
+            
+            <div class="explainer-box">
+                <b>¿Cuál es la estrategia aquí?</b>
+                <p>No vamos a memorizar listas interminables en orden alfabético. En este laboratorio hemos filtrado los <b>+50 verbos más utilizados en conversaciones reales</b>.</p>
+            </div>
+
+            <p>Aprenderemos a identificarlos, a transformarlos al <b>Past Simple</b> (Regulares vs Irregulares) y, lo más crítico: a pronunciarlos como un profesional usando las reglas acústicas de la terminación <b>-ed</b>.</p>
+
+            <button class="btn-action" onclick="nav('dictionary')">Ingresar a la Matriz de Verbos <i class="fas fa-arrow-right"></i></button>
+        </div>
+    </section>
+
+    <section id="sec-dictionary" class="section">
+        <div class="card">
+            <h1 class="serif-text">Matriz de <span style="color: var(--secondary);">Verbos</span></h1>
+            <p>Explora el arsenal. <b>Haz clic en cualquier tarjeta</b> para escuchar la pronunciación correcta del verbo en presente y en pasado.</p>
+            
+            <div class="matrix-controls">
+                <input type="text" class="search-bar" id="searchInput" placeholder="Buscar en inglés o español..." onkeyup="filterVerbs()">
+                <button class="filter-btn active" id="btnAll" onclick="setFilter('all')">Todos</button>
+                <button class="filter-btn" id="btnReg" onclick="setFilter('regular')">Regulares</button>
+                <button class="filter-btn" id="btnIrreg" onclick="setFilter('irregular')">Irregulares</button>
+            </div>
+
+            <div class="verb-grid" id="verbGrid">
+                </div>
+
+            <button class="btn-action" style="background: var(--surface-color); color: var(--text-main); border: 2px solid var(--border-color); box-shadow: none;" onclick="nav('phonics')">Ver Reglas de Pronunciación <i class="fas fa-volume-up"></i></button>
+        </div>
+    </section>
+
+    <section id="sec-phonics" class="section">
+        <div class="card">
+            <h1 class="serif-text">Phonics & <span style="color: var(--primary);">Pronunciation</span></h1>
+            <p>Los verbos irregulares cambian por completo, debes aprenderlos de memoria. Pero los <b>Verbos Regulares</b> (los que terminan en -ed) siguen una regla acústica estricta. Nunca digas "Work-ed" o "Play-ed".</p>
+            
+            <div class="explainer-box" style="border-left-color: var(--accent); background: var(--accent-light);">
+                <b>La terminación -ED tiene 3 sonidos diferentes:</b>
+                <p>Depende del último sonido (no la última letra) del verbo en su forma base.</p>
+            </div>
+
+            <div class="pron-grid">
+                <div class="pron-box">
+                    <span class="sound">/t/</span>
+                    <p><b>Sonidos sordos (Sin vibración):</b><br>p, k, f, s, sh, ch, x</p>
+                    <p class="lang-en" style="display:inline-block;">Work &rarr; Worked (/t/)</p><br>
+                    <p class="lang-en" style="display:inline-block; margin-top:5px;">Help &rarr; Helped (/t/)</p>
+                </div>
+
+                <div class="pron-box">
+                    <span class="sound">/d/</span>
+                    <p><b>Sonidos sonoros (Con vibración) y Vocales:</b><br>l, v, n, m, r, b, v, g, w, y, z</p>
+                    <p class="lang-en" style="display:inline-block;">Play &rarr; Played (/d/)</p><br>
+                    <p class="lang-en" style="display:inline-block; margin-top:5px;">Call &rarr; Called (/d/)</p>
+                </div>
+
+                <div class="pron-box" style="border-color: var(--primary);">
+                    <span class="sound">/ɪd/</span>
+                    <p><b>Solo si el verbo termina en:</b><br>T o D</p>
+                    <p class="lang-en" style="display:inline-block;">Need &rarr; Needed (/ɪd/)</p><br>
+                    <p class="lang-en" style="display:inline-block; margin-top:5px;">Start &rarr; Started (/ɪd/)</p>
+                </div>
+            </div>
+
+            <button class="btn-action" onclick="nav('practice')">Ir al Taller de Contexto <i class="fas fa-wrench"></i></button>
+        </div>
+    </section>
+
+    <section id="sec-practice" class="section">
+        <div class="card">
+            <h1 class="serif-text">Taller de <span style="color: var(--secondary);">Contexto</span></h1>
+            <p>Un verbo no sirve de nada si no sabes en qué tiempo usarlo. Lee la oración y selecciona el verbo correcto (Presente o Pasado) para completar el sentido.</p>
+            
+            <div class="workshop-area">
+                <div class="sentence-display" id="pracSentence">
+                    </div>
+
+                <div class="options-grid" id="pracOptions">
+                    </div>
+
+                <div class="teacher-note" id="teacherExp">
+                    <b><i class="fas fa-lightbulb"></i> Teacher's Note:</b>
+                    <p id="expText"></p>
+                    <button class="btn-ui verify" style="margin-top:20px;" onclick="nextPrac()">Siguiente Oración <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="sec-evaluation" class="section">
+        <div class="card">
+            <div id="quiz-preamble">
+                <h1 class="serif-text">Evaluación de <span style="color: var(--primary);">Fluidez</span></h1>
+                <p>Tienes <b>5 minutos</b> para completar 10 escenarios mezclados. Demuestra que dominas la conjugación y el contexto.</p>
+                <div class="explainer-box" style="padding: 1.5rem; margin-top: 1.5rem; margin-bottom: 2.5rem; background: var(--surface-hover); border-color: var(--border-color);">
+                    <p style="color: var(--text-muted);">Requiere un mínimo de <b>80%</b> para obtener la certificación. Los errores serán analizados al finalizar.</p>
+                </div>
+                <button class="btn-action" style="margin-top: 0;" onclick="startEvaluation()">Iniciar Protocolo 🚀</button>
+            </div>
+
+            <div id="quiz-active" style="display:none;">
+                <div class="timer-track"><div id="timer-fill"></div></div>
+                <div id="question-box"></div>
+            </div>
+
+            <div class="success-frame" id="quiz-success">
+                <h1 id="result-heading" class="serif-text" style="color: var(--secondary);">¡CERTIFICACIÓN OBTENIDA!</h1>
+                <p id="result-sub" style="font-size:1.2rem; color: var(--text-muted);">Has integrado el Arsenal de Acción a tu vocabulario.</p>
+                
+                <div class="success-img-box" id="success-image-container">
+                    <img src="https://drive.google.com/thumbnail?id=1bOFY9XiVAv-WRQnVHXSnL5FHVEoK3UAp&sz=w800" alt="Success">
+                </div>
+                
+                <p id="final-result-text" style="font-size: 3.5rem; font-weight: 800; color: var(--primary); margin: 1.5rem 0; font-family: 'Lora', serif;"></p>
+                
+                <div class="review-box" id="reviewBox">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Análisis de Errores:</h3>
+                    <div id="reviewContent"></div>
+                </div>
+
+                <button class="btn-action" style="background: var(--surface-color); color: var(--text-main); border: 2px solid var(--border-color); box-shadow: none;" onclick="location.reload()">Volver al Inicio</button>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<footer>
+    <div class="footer-content" style="max-width: 800px; margin: 0 auto;">
+        <div class="footer-brand">Rators Club</div>
+        <p class="footer-text">Teacher Netza Varo • Fluent Architecture</p>
+        <a href="mailto:teacher.netza.varo@gmail.com" class="footer-email">teacher.netza.varo@gmail.com</a>
+        <p class="footer-text">Tepic, Nayarit, México</p>
+        <div class="footer-license">PLATINUM EDITION 2026 | GNU GPL v3.0 | BY RATORS TEAM</div>
+    </div>
+</footer>
+
+<a href="https://wa.me/523231116425?text=Hola%20Teacher%20Netza,%20estoy%20en%20el%20Laboratorio%20de%20Vocabulario%20y%20me%20gustar%C3%ADa%20agendar%20una%20asesor%C3%ADa." class="wa-float" target="_blank" title="Contactar a Teacher">
+    <i class="fab fa-whatsapp"></i>
+</a>
+
+<script>
+    /* ========================================
+       ENGINE: VERB MASTERY LOGIC
+       ======================================== */
+    
+    // --- Top 50 Verbs Database ---
+    const verbsDb = [
+        { base: "be", past: "was/were", type: "irregular", es: "ser / estar" },
+        { base: "have", past: "had", type: "irregular", es: "tener" },
+        { base: "do", past: "did", type: "irregular", es: "hacer" },
+        { base: "say", past: "said", type: "irregular", es: "decir" },
+        { base: "go", past: "went", type: "irregular", es: "ir" },
+        { base: "get", past: "got", type: "irregular", es: "obtener / conseguir" },
+        { base: "make", past: "made", type: "irregular", es: "hacer / fabricar" },
+        { base: "know", past: "knew", type: "irregular", es: "saber / conocer" },
+        { base: "think", past: "thought", type: "irregular", es: "pensar" },
+        { base: "take", past: "took", type: "irregular", es: "tomar / llevar" },
+        { base: "see", past: "saw", type: "irregular", es: "ver" },
+        { base: "come", past: "came", type: "irregular", es: "venir" },
+        { base: "find", past: "found", type: "irregular", es: "encontrar" },
+        { base: "give", past: "gave", type: "irregular", es: "dar" },
+        { base: "tell", past: "told", type: "irregular", es: "decirle a alguien" },
+        { base: "work", past: "worked", type: "regular", es: "trabajar" },
+        { base: "call", past: "called", type: "regular", es: "llamar" },
+        { base: "try", past: "tried", type: "regular", es: "intentar" },
+        { base: "ask", past: "asked", type: "regular", es: "preguntar / pedir" },
+        { base: "need", past: "needed", type: "regular", es: "necesitar" },
+        { base: "feel", past: "felt", type: "irregular", es: "sentir" },
+        { base: "become", past: "became", type: "irregular", es: "convertirse en" },
+        { base: "leave", past: "left", type: "irregular", es: "dejar / salir" },
+        { base: "put", past: "put", type: "irregular", es: "poner" },
+        { base: "mean", past: "meant", type: "irregular", es: "significar" },
+        { base: "keep", past: "kept", type: "irregular", es: "mantener / guardar" },
+        { base: "let", past: "let", type: "irregular", es: "permitir / dejar" },
+        { base: "begin", past: "began", type: "irregular", es: "empezar" },
+        { base: "seem", past: "seemed", type: "regular", es: "parecer" },
+        { base: "help", past: "helped", type: "regular", es: "ayudar" },
+        { base: "talk", past: "talked", type: "regular", es: "hablar" },
+        { base: "turn", past: "turned", type: "regular", es: "girar / dar vuelta" },
+        { base: "start", past: "started", type: "regular", es: "comenzar" },
+        { base: "show", past: "showed", type: "regular", es: "mostrar" },
+        { base: "hear", past: "heard", type: "irregular", es: "escuchar" },
+        { base: "play", past: "played", type: "regular", es: "jugar / tocar" },
+        { base: "run", past: "ran", type: "irregular", es: "correr" },
+        { base: "move", past: "moved", type: "regular", es: "mover / mudarse" },
+        { base: "like", past: "liked", type: "regular", es: "gustar" },
+        { base: "live", past: "lived", type: "regular", es: "vivir" },
+        { base: "believe", past: "believed", type: "regular", es: "creer" },
+        { base: "hold", past: "held", type: "irregular", es: "sostener" },
+        { base: "bring", past: "brought", type: "irregular", es: "traer" },
+        { base: "write", past: "wrote", type: "irregular", es: "escribir" },
+        { base: "sit", past: "sat", type: "irregular", es: "sentarse" },
+        { base: "stand", past: "stood", type: "irregular", es: "estar de pie" },
+        { base: "lose", past: "lost", type: "irregular", es: "perder" },
+        { base: "pay", past: "paid", type: "irregular", es: "pagar" },
+        { base: "meet", past: "met", type: "irregular", es: "conocer / reunirse" },
+        { base: "learn", past: "learned", type: "regular", es: "aprender" }
+    ];
+
+    let currentFilter = 'all';
+
+    // --- Audio Synthesis ---
+    let audioUnlocked = false;
+    function unlockAudio() { if(!audioUnlocked) { window.speechSynthesis.speak(new SpeechSynthesisUtterance("")); audioUnlocked = true; } }
+    
+    function speakVerb(base, past) {
+        window.speechSynthesis.cancel();
+        let text = `${base}. Past: ${past}`;
+        // Clean up text for TTS (e.g., was/were -> was, were)
+        text = text.replace("/", ", ");
+        const msg = new SpeechSynthesisUtterance(text);
+        msg.lang = 'en-US'; msg.rate = 0.8;
+        window.speechSynthesis.speak(msg);
+    }
+    
+    function speakText(txt) {
+        window.speechSynthesis.cancel();
+        const msg = new SpeechSynthesisUtterance(txt);
+        msg.lang = 'en-US'; msg.rate = 0.85;
+        window.speechSynthesis.speak(msg);
+    }
+
+    // --- Navigation & Theme ---
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
+    
+    function toggleTheme() {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        localStorage.setItem('rators-premium-theme', isDark ? 'dark' : 'light');
+    }
+
+    function nav(id, btn) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        setTimeout(() => { document.getElementById('sec-' + id).classList.add('active'); }, 50);
+        
+        document.querySelectorAll('.side-btn').forEach(b => b.classList.remove('active'));
+        if(btn) btn.classList.add('active');
+        
+        if(document.getElementById('sidebar').classList.contains('active')) toggleSidebar();
+        window.scrollTo(0,0);
+        
+        if(id === 'dictionary') renderVerbs();
+        if(id === 'practice') initWorkshop();
+    }
+
+    // --- Verb Matrix Rendering & Filtering ---
+    function renderVerbs(query = "") {
+        const grid = document.getElementById('verbGrid');
+        grid.innerHTML = '';
+        
+        let filtered = verbsDb.filter(v => {
+            const matchesSearch = v.base.includes(query) || v.es.includes(query) || v.past.includes(query);
+            const matchesType = currentFilter === 'all' ? true : v.type === currentFilter;
+            return matchesSearch && matchesType;
+        });
+
+        if(filtered.length === 0) {
+            grid.innerHTML = '<p style="color:var(--text-muted); grid-column: 1/-1; text-align:center;">No se encontraron verbos.</p>';
+            return;
+        }
+
+        filtered.forEach(v => {
+            const card = document.createElement('div');
+            card.className = 'verb-card';
+            card.onclick = () => speakVerb(v.base, v.past);
+            
+            const typeClass = v.type === 'regular' ? 'reg' : 'irreg';
+            
+            card.innerHTML = `
+                <div class="type-tag ${typeClass}">${v.type}</div>
+                <div class="es-meaning">${v.es}</div>
+                <div class="en-base">${v.base}</div>
+                <div class="en-past">${v.past}</div>
+                <i class="fas fa-volume-up audio-icon-hover"></i>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    function filterVerbs() {
+        const query = document.getElementById('searchInput').value.toLowerCase();
+        renderVerbs(query);
+    }
+
+    function setFilter(type) {
+        currentFilter = type;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        if(type === 'all') document.getElementById('btnAll').classList.add('active');
+        if(type === 'regular') document.getElementById('btnReg').classList.add('active');
+        if(type === 'irregular') document.getElementById('btnIrreg').classList.add('active');
+        filterVerbs(document.getElementById('searchInput').value.toLowerCase());
+    }
+
+    // --- Guided Workshop Logic ---
+    const workshopData = [
+        {
+            sentence: "Yesterday, I <span class='blank'></span> to the supermarket.",
+            options: ["go", "went", "goed"],
+            answer: "went",
+            exp: "La palabra clave es <b>Yesterday</b> (Ayer). El verbo es 'go', pero como es irregular, su pasado cambia completamente a 'went'."
+        },
+        {
+            sentence: "We usually <span class='blank'></span> our grandparents on Sundays.",
+            options: ["visit", "visited", "visiting"],
+            answer: "visit",
+            exp: "La palabra clave es <b>usually</b> (usualmente). Indica una rutina, por lo que usamos el Presente Simple 'visit'."
+        },
+        {
+            sentence: "They <span class='blank'></span> a new house last year.",
+            options: ["buy", "buyed", "bought"],
+            answer: "bought",
+            exp: "<b>Last year</b> indica pasado. El verbo 'buy' es irregular, por lo que no se le agrega -ed. La forma correcta es 'bought'."
+        },
+        {
+            sentence: "She <span class='blank'></span> English every night.",
+            options: ["study", "studies", "studied"],
+            answer: "studies",
+            exp: "<b>Every night</b> es un hábito (Presente). Como hablamos de 'She' (tercera persona), debemos agregar la regla de la 's' o 'es': 'studies'."
+        },
+        {
+            sentence: "He <span class='blank'></span> me on the phone two hours ago.",
+            options: ["call", "called", "calls"],
+            answer: "called",
+            exp: "<b>Two hours ago</b> (hace dos horas) es pasado. El verbo 'call' es regular, por lo que le agregamos -ed ('called'). ¡Y se pronuncia con sonido /d/!"
+        }
+    ];
+    let curPracIdx = 0;
+
+    function initWorkshop() {
+        document.getElementById('teacherExp').style.display = 'none';
+        
+        const data = workshopData[curPracIdx];
+        document.getElementById('pracSentence').innerHTML = data.sentence;
+        
+        const optionsGrid = document.getElementById('pracOptions');
+        optionsGrid.innerHTML = '';
+        
+        // Shuffle options
+        let opts = [...data.options].sort(() => Math.random() - 0.5);
+        
+        opts.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'opt-btn';
+            btn.innerText = opt;
+            btn.onclick = () => verifyWorkshop(opt, data.answer, data.exp);
+            optionsGrid.appendChild(btn);
+        });
+    }
+
+    function verifyWorkshop(selected, correct, explanation) {
+        if(selected === correct) {
+            confetti({ particleCount: 100, spread: 60, origin: { y: 0.6 } });
+            document.getElementById('pracSentence').innerHTML = document.getElementById('pracSentence').innerHTML.replace("<span class='blank'></span>", `<span style='color:var(--primary); font-family:JetBrains Mono, monospace;'>${correct}</span>`);
+            document.getElementById('pracOptions').innerHTML = ''; // Hide buttons
+            
+            const expBox = document.getElementById('teacherExp');
+            document.getElementById('expText').innerHTML = explanation;
+            expBox.style.display = 'block';
+            speakText(correct);
+            
+        } else {
+            speakText("Try again.");
+            // Pequeña animación de error
+            const btns = document.querySelectorAll('.opt-btn');
+            btns.forEach(b => {
+                if(b.innerText === selected) {
+                    b.style.borderColor = 'var(--error)';
+                    b.style.color = 'var(--error)';
+                    setTimeout(() => { b.style.borderColor = 'var(--border-color)'; b.style.color = 'var(--text-main)'; }, 1000);
+                }
+            });
+        }
+    }
+
+    function nextPrac() {
+        curPracIdx = (curPracIdx + 1) % workshopData.length;
+        initWorkshop();
+    }
+
+    // --- Final Evaluation Logic ---
+    const quizItems = [
+        { q: "I ____ a great movie on TV last night.", a: "saw", o: ["see", "saw", "seed"] },
+        { q: "My brother always ____ up at 6:00 AM.", a: "wakes", o: ["wake", "wakes", "woke"] },
+        { q: "They ____ a lot of money on their vacation.", a: "spent", o: ["spend", "spended", "spent"] },
+        { q: "She ____ to the gym three times a week.", a: "goes", o: ["go", "goes", "went"] },
+        { q: "We ____ our keys in the car yesterday.", a: "left", o: ["leave", "left", "leaved"] },
+        { q: "The teacher ____ the lesson very clearly today.", a: "explained", o: ["explain", "explained", "explaint"] },
+        { q: "He ____ how to fix computers.", a: "knows", o: ["know", "knows", "knew"] },
+        { q: "I ____ an email to the boss two days ago.", a: "wrote", o: ["write", "wrote", "writed"] },
+        { q: "Water ____ at 100 degrees Celsius.", a: "boils", o: ["boil", "boils", "boiled"] },
+        { q: "They ____ to play soccer when it started to rain.", a: "began", o: ["begin", "began", "begun"] }
+    ];
+
+    let quizIdx = 0;
+    let quizScore = 0;
+    let quizClock;
+    let mistakesArray = [];
+
+    function startEvaluation() {
+        document.getElementById('quiz-preamble').style.display = 'none';
+        document.getElementById('quiz-active').style.display = 'block';
+        mistakesArray = [];
+        quizScore = 0;
+        quizIdx = 0;
+        
+        let timeLeft = 300; 
+        quizClock = setInterval(() => {
+            timeLeft -= 0.2;
+            document.getElementById('timer-fill').style.width = (timeLeft / 300) * 100 + '%';
+            if(timeLeft <= 0) finishEvaluation();
+        }, 200);
+        showQuestion();
+    }
+
+    function showQuestion() {
+        if(quizIdx >= quizItems.length) return finishEvaluation();
+        
+        const data = quizItems[quizIdx];
+        const box = document.getElementById('question-box');
+        box.innerHTML = `<h3 style="font-size: 1.35rem; margin-bottom: 2rem; color:var(--text-main); font-family:'Nunito Sans', sans-serif; font-weight: 600; line-height: 1.6;">${data.q}</h3>`;
+        
+        data.o.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'quiz-option';
+            btn.innerText = opt;
+            btn.onclick = () => {
+                if(opt === data.a) {
+                    quizScore++;
+                } else {
+                    mistakesArray.push({
+                        question: data.q.replace('____', `<b style="color:var(--primary);">${data.a}</b>`),
+                        userAnswer: opt
+                    });
+                }
+                quizIdx++;
+                showQuestion();
+            };
+            box.appendChild(btn);
+        });
+    }
+
+    function finishEvaluation() {
+        clearInterval(quizClock);
+        document.getElementById('quiz-active').style.display = 'none';
+        document.getElementById('quiz-success').style.display = 'block';
+        
+        const resultText = document.getElementById('final-result-text');
+        const heading = document.getElementById('result-heading');
+        const sub = document.getElementById('result-sub');
+        const imgBox = document.getElementById('success-image-container');
+        
+        resultText.innerText = `${quizScore} / 10`;
+        
+        if(quizScore >= 8) {
+            confetti({ particleCount: 300, spread: 120, origin: { y: 0.6 } });
+            heading.innerText = "¡CERTIFICACIÓN OBTENIDA!";
+            heading.style.color = "var(--secondary)";
+            sub.innerText = "Eres capaz de utilizar el arsenal de acciones fluidamente.";
+            imgBox.style.display = "block";
+        } else {
+            heading.innerText = "EVALUACIÓN FALLIDA";
+            heading.style.color = "var(--error)";
+            sub.innerText = "Debes repasar las formas irregulares. Revisa tus errores abajo.";
+            imgBox.style.display = "none";
+            resultText.style.color = "var(--error)";
+        }
+
+        const reviewBox = document.getElementById('reviewBox');
+        const reviewContent = document.getElementById('reviewContent');
+        if (mistakesArray.length > 0) {
+            reviewBox.style.display = 'block';
+            let html = '';
+            mistakesArray.forEach((err, i) => {
+                html += `<div class="review-item">
+                            <p style="margin:0; font-size:1.1rem; color:var(--text-main);"><b>${i+1}.</b> ${err.question}</p>
+                            <p style="margin:8px 0 0; color:var(--text-muted); font-size:0.95rem;">Seleccionaste: <span style="color:var(--error); text-decoration:line-through; font-weight:700;">${err.userAnswer}</span></p>
+                         </div>`;
+            });
+            reviewContent.innerHTML = html;
+        } else {
+            reviewBox.style.display = 'none';
+        }
+    }
+
+    window.onload = () => {
+        const pref = localStorage.getItem('rators-premium-theme');
+        if(pref === 'dark') {
+            document.body.classList.add('dark-mode');
+            document.getElementById('themeInput').checked = true;
+        }
+        // Initialize verbs dict on load
+        renderVerbs();
+    };
+</script>
+
+</body>
+</html>
